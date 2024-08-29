@@ -3,7 +3,7 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
 
 <instance-profile id="in"
-                 name="BlastFurnace Compiler Implementation Details"
+                 name="Ingot Design Documentation"
                  start-page="starter.md">
 
     <toc-element topic="starter.md"/>
