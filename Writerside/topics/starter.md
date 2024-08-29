@@ -1,79 +1,34 @@
-# Starter
+# The Ingot Programming Language
 
-<!--Writerside adds this topic when you create a new documentation project.
-You can use it as a sandbox to play with Writerside features, and remove it from the TOC when you don't need it anymore.-->
+Bringing Modern Programming features to streamline Datapack Development
 
-## Add new topics
-You can create empty topics, or choose a template for different types of content that contains some boilerplate structure to help you get started:
+## Background
 
-![Create new topic options](new_topic_options.png){ width=290 }{border-effect=line}
+Datapacks are an easy, non-intrusive way to add modifications to a Minecraft save instance. They can be shipped with the world, and users do not need any sort of client-side modification to use the changes. Due to their simplicity for the end-user, they have been gaining popularity for singleplayer worlds and small servers.
 
-## Write content
-%product% supports two types of markup: Markdown and XML.
-When you create a new help article, you can choose between two topic types, but this doesn't mean you have to stick to a single format.
-You can author content in Markdown and extend it with semantic attributes or inject entire XML elements.
+Within a Datapack, developers can add functions, which as the name suggests, allows the execution of a sequence of statements after being called. However, functions can be difficult to work with, especially as the codebase becomes larger and more complex. Minecraft functions are derived from console commands, which has suffered from significant feature creep over the last decade, leading to a Turing-complete language with the ability to interact with virtually any game feature, at the expense of an incredibly convoluted language.
 
-## Inject XML
-For example, this is how you inject a procedure:
+Many compare Minecraft functions, or mcfunction to low-level assembly languages, since they both possess a very simple instruction set. This has inspired many developers in the community to build their own macro preprocessors, code generators, and compilers, in order to avoid having to write in mcfunction.
 
-<procedure title="Inject a procedure" id="inject-a-procedure">
-    <step>
-        <p>Start typing and select a procedure type from the completion suggestions:</p>
-        <img src="completion_procedure.png" alt="completion suggestions for procedure" border-effect="line"/>
-    </step>
-    <step>
-        <p>Press <shortcut>Tab</shortcut> or <shortcut>Enter</shortcut> to insert the markup.</p>
-    </step>
-</procedure>
+## Why Another mcfunction Language / Compiler?
 
-## Add interactive elements
+There are many different languages with “mcfunction compilers” available today, but they’re often either too low-level, leaving a lot to be desired, or too high-level, which outputs poorly-optimized code.
 
-### Tabs
-To add switchable content, you can make use of tabs (inject them by starting to type `tab` on a new line):
+An obvious contender for solving these issues is by creating an mcfunction backend for LLVM. This way, developers would be able to choose from a vast array of different high-level languages, while addressing the performance concerns through LLVM’s optimization layer. However, despite the fact that LLVM tries to assume very little about its backend in order to provide an IR that can be efficiently converted into any instruction set, it’s still too much for an efficient implementation. While the specific details are out of scope for this document, writing an mcfunction backend raises very similar issues as the ones that WebAssembly faces. One such example is the performance issues derived from WASM’s restriction on arbitrary control-flow graphs due to the lack of arbitrary jumps, just like in mcfunction. Because mcfunction runs very slowly, having to run inside a Minecraft instance which runs on a JVM, we need to get as much performance out of our implementation as possible.
 
-<tabs>
-    <tab title="Markdown">
-        <code-block lang="plain text">![Alt Text](new_topic_options.png){ width=450 }</code-block>
-    </tab>
-    <tab title="Semantic markup">
-        <code-block lang="xml">
-            <![CDATA[<img src="new_topic_options.png" alt="Alt text" width="450px"/>]]></code-block>
-    </tab>
-</tabs>
+I was inspired by the Rust programming language, which provides developers with many abstract, high-level features which incur little to no cost at runtime.
 
-### Collapsible blocks
-Apart from injecting entire XML elements, you can use attributes to configure the behavior of certain elements.
-For example, you can collapse a chapter that contains non-essential information:
+## Requirements
 
-#### Supplementary info {collapsible="true"}
-Content under a collapsible header will be collapsed by default,
-but you can modify the behavior by adding the following attribute:
-`default-state="expanded"`
+The goal of this project is to create a programming language and toolchain to bring modern programming features to datapack development. There is a list of requirements that this project will need to fulfill. Note that this list is likely to expand throughout development:
 
-### Convert selection to XML
-If you need to extend an element with more functions, you can convert selected content from Markdown to semantic markup.
-For example, if you want to merge cells in a table, it's much easier to convert it to XML than do this in Markdown.
-Position the caret anywhere in the table and press <shortcut>Alt+Enter</shortcut>:
+* Package management system
+* Module system without header files
+* Implicit types, type inference, and type checking
+* Type definitions for aliases and structs
+* Name resolution for local and global scopes
+* Language server
 
-<img src="convert_table_to_xml.png" alt="Convert table to XML" width="706" border-effect="line"/>
+## Sub-Design Documents
 
-## Feedback and support
-Please report any issues, usability improvements, or feature requests to our
-<a href="https://youtrack.jetbrains.com/newIssue?project=WRS">YouTrack project</a>
-(you will need to register).
-
-You are welcome to join our
-<a href="https://jb.gg/WRS_Slack">public Slack workspace</a>.
-Before you do, please read our [Code of conduct](https://plugins.jetbrains.com/plugin/20158-writerside/docs/writerside-code-of-conduct.html).
-We assume that you’ve read and acknowledged it before joining.
-
-You can also always email us at [writerside@jetbrains.com](mailto:writerside@jetbrains.com).
-
-<seealso>
-    <category ref="wrs">
-        <a href="https://plugins.jetbrains.com/plugin/20158-writerside/docs/markup-reference.html">Markup reference</a>
-        <a href="https://plugins.jetbrains.com/plugin/20158-writerside/docs/manage-table-of-contents.html">Reorder topics in the TOC</a>
-        <a href="https://plugins.jetbrains.com/plugin/20158-writerside/docs/local-build.html">Build and publish</a>
-        <a href="https://plugins.jetbrains.com/plugin/20158-writerside/docs/configure-search.html">Configure Search</a>
-    </category>
-</seealso>
+Here are a list of links to design documents of various components of the language and compiler.
